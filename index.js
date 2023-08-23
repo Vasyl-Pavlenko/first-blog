@@ -3,6 +3,9 @@ import fs from 'fs';
 import mongoose from 'mongoose';
 import multer from 'multer';
 import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 import {
   registerValidation,
@@ -19,8 +22,8 @@ mongoose.connect(process.env.MONGO_URL)
   .then(() => {
     console.log('DB connected...')
   })
-  .catch(() => {
-    console.log('DB error...')
+  .catch((error) => {
+    console.log(`DB error...${error}`)
   })
 
 const app = express();
@@ -41,7 +44,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: '*' }));
 app.use('/uploads', express.static('uploads'));
 
 app.post('/auth/login', loginValidation, handleValidationsErrors, UserController.login);
