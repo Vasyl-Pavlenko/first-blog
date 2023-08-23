@@ -53,6 +53,8 @@ app.use((req, res, next) => {
 });
 app.use('/uploads', express.static('uploads'));
 
+app.options('*', cors());
+
 app.post('/auth/login', loginValidation, handleValidationsErrors, UserController.login);
 app.post('/auth/register', registerValidation, handleValidationsErrors, UserController.register);
 app.get('/auth/me', checkAuth, UserController.getMe);
